@@ -12,7 +12,7 @@
 3. This will spin up the db, and service-poller, service-portal services
    While the service layer is running switch to another cli tab
 4. Switch to `web-app` directory
-5. Execute `yarn && yarn start` command
+5. Execute `yarn && yarn start`  or `npm i && npm start` command
    This will start the web app in port 3000
 6. Go to http://localhost:3000 in a web browser
 
