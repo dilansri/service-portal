@@ -1,0 +1,30 @@
+
+type Service {
+  id: ID!
+  name: String!
+  url: String!
+  description: String
+  statusCode: Int
+  updatedAt: String!
+}
+
+type Query {
+  service(id: ID!): Service!
+  services: [Service!]!
+}
+
+input ServiceInput {
+  name: String!
+  url: String!
+  description: String
+}
+
+type DeleteStatus{
+  status: String
+}
+
+type Mutation {
+  createService(service: ServiceInput!) : Service
+  updateService(id: ID!, service: ServiceInput): Service
+  deleteService(id: ID!): Boolean
+}

@@ -1,0 +1,51 @@
+version: "3.3"
+services:
+  poller:
+    build: ./poller/servicePoller/
+    environment:
+      DB_PORT: 5432
+      DB_HOST: db
+      DB_DATABASE: services-db
+      DB_USER: service_username
+      DB_PASSWORD: service_password
+      DB_POLL_SIZE: 10
+    networks:
+      - service_network
+    depends_on:
+      - db
+  portal:
+    build: ./server/servicePortal/
+    environment:
+      DB_PORT: 5432
+      DB_HOST: db
+      DB_DATABASE: services-db
+      DB_USER: service_username
+      DB_PASSWORD: service_password
+      DB_POLL_SIZE: 70
+    ports:
+      - "8888:8888"
+    networks:
+      - service_network
+    depends_on:
+      - db
+  db:
+    image: "postgres:latest"
+    container_name: "pg_database_container"
+    restart: always
+    command: postgres -c 'max_connections=200'
+    ports:
+      - "54320:5432"
+    volumes:
+      - ./db/sql/init.sql:/docker-entrypoint-initdb.d/1-init.sql
+      - ./db/sql/data.sql:/docker-entrypoint-initdb.d/2-data.sql
+      - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: service_username
+      POSTGRES_PASSWORD: service_password
+      POSTGRES_DB: services-db
+    networks:
+      - service_network
+volumes:
+  db_data:
+networks:
+  service_network:
